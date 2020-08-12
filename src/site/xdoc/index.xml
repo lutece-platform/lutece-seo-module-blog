@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>SEO Module for Blog plugin</title>
+    </properties>
+    <body>
+        <section name="SEO Module for Blog plugin">
+            <subsection name="Introduction">
+                <p>
+                    This module is an extension of the <a href="https://github.com/lutece-platform/lutece-seo-plugin-seo" target="_blank" >SEO plugin</a>
+                </p>
+                <p>
+                    This module provides a generator to build explicit URLs from technical URLs coming 
+                    from the <a href="https://github.com/lutece-platform/lutece-cms-plugin-blog" target="_blank" >Blog plugin</a>
+                </p>
+            </subsection>
+        </section>
+    </body>
+</document>
+
