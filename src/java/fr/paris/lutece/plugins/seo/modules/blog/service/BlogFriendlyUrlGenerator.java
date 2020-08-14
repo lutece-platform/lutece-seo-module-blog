@@ -48,7 +48,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 /**
- * Document Alias Generator
+ * Blog Friendly Url Generator
  */
 public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
 {
@@ -57,6 +57,7 @@ public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
     private static final String SLASH = "/";
     private static final String DEFAULT_CHANGE_FREQ = SitemapUtils.CHANGE_FREQ_VALUES [3];
     private static final String DEFAULT_PRIORITY = SitemapUtils.PRIORITY_VALUES [3];
+    private static final String PATH_BLOG = "/blog/";
     private boolean _bCanonical;
     private boolean _bSitemap;
     private String _strChangeFreq;
@@ -74,7 +75,17 @@ public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
         {
             FriendlyUrl url = new FriendlyUrl( );
 
-            url.setFriendlyUrl( SLASH + FriendlyUrlUtils.convertToFriendlyUrl( doc.getName( ) ) );
+           if ( options.isAddPath(  ) )
+            {
+                String strPath = PATH_BLOG;
+                url.setFriendlyUrl( strPath + FriendlyUrlUtils.convertToFriendlyUrl( doc.getName( ) ) );
+            }
+            else
+            {
+                url.setFriendlyUrl( SLASH + FriendlyUrlUtils.convertToFriendlyUrl( doc.getName( ) ) );
+            }
+            
+            
             Object [ ] args = {
                     doc.getId( ), doc.getAttachedPortletId( )
             };
