@@ -35,6 +35,7 @@ package fr.paris.lutece.plugins.seo.modules.blog.service;
 
 import fr.paris.lutece.plugins.blog.business.Blog;
 import fr.paris.lutece.plugins.blog.business.BlogHome;
+import fr.paris.lutece.plugins.blog.business.portlet.BlogPublication;
 import fr.paris.lutece.plugins.seo.business.FriendlyUrl;
 import fr.paris.lutece.plugins.seo.service.FriendlyUrlUtils;
 import fr.paris.lutece.plugins.seo.service.SEODataKeys;
@@ -85,21 +86,45 @@ public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
                 url.setFriendlyUrl( SLASH + FriendlyUrlUtils.convertToFriendlyUrl( doc.getName( ) ) );
             }
             
+            List<BlogPublication> listPublications = doc.getBlogPubilcation();
+            BlogPublication publication = getPublication( listPublications );
             
-            Object [ ] args = {
-                    doc.getId( ), doc.getAttachedPortletId( )
-            };
-            String strTechnicalUrl = MessageFormat.format( TECHNICAL_URL, args );
-            url.setTechnicalUrl( strTechnicalUrl );
-            url.setCanonical( _bCanonical );
-            url.setSitemap( _bSitemap );
-            url.setSitemapChangeFreq( _strChangeFreq );
-            url.setSitemapLastmod( SitemapUtils.formatDate( doc.getUpdateDate( ) ) );
-            url.setSitemapPriority( _strPriority );
-            list.add( url );
+            if( publication != null )
+            {
+                Object [ ] args = {
+                        doc.getId( ), publication.getIdPortlet()
+                };
+                String strTechnicalUrl = MessageFormat.format( TECHNICAL_URL, args );
+                url.setTechnicalUrl( strTechnicalUrl );
+                url.setCanonical( _bCanonical );
+                url.setSitemap( _bSitemap );
+                url.setSitemapChangeFreq( _strChangeFreq );
+                url.setSitemapLastmod( SitemapUtils.formatDate( doc.getUpdateDate( ) ) );
+                url.setSitemapPriority( _strPriority );
+                list.add( url );
+            }
         }
 
         return "";
+    }
+    
+    /**
+     * Return the first valid publication of a list 
+     * @param listPublications The list
+     * @return the first valid publication otherwise null
+     */
+    private BlogPublication getPublication( List<BlogPublication> listPublications )
+    {
+        BlogPublication publication = null;
+        for( BlogPublication bp : listPublications )
+        {
+            if( bp.getStatus() == 1 )
+            {
+                return bp;
+            }
+        }
+
+        return publication;    
     }
 
     /**
