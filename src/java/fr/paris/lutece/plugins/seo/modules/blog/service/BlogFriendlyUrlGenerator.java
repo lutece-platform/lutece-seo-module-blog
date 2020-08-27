@@ -36,6 +36,7 @@ package fr.paris.lutece.plugins.seo.modules.blog.service;
 import fr.paris.lutece.plugins.blog.business.Blog;
 import fr.paris.lutece.plugins.blog.business.BlogHome;
 import fr.paris.lutece.plugins.blog.business.portlet.BlogPublication;
+import fr.paris.lutece.plugins.blog.service.BlogService;
 import fr.paris.lutece.plugins.seo.business.FriendlyUrl;
 import fr.paris.lutece.plugins.seo.service.FriendlyUrlUtils;
 import fr.paris.lutece.plugins.seo.service.SEODataKeys;
@@ -72,8 +73,10 @@ public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
     {
         init( );
 
-        for ( Blog doc : BlogHome.getBlogsList( ) )
+        for ( Integer nId : BlogHome.getIdBlogsList() )
         {
+            Blog doc = BlogService.getInstance().loadBlog( nId );
+            
             FriendlyUrl url = new FriendlyUrl( );
 
            if ( options.isAddPath(  ) )
@@ -86,7 +89,7 @@ public class BlogFriendlyUrlGenerator implements FriendlyUrlGenerator
                 url.setFriendlyUrl( SLASH + FriendlyUrlUtils.convertToFriendlyUrl( doc.getName( ) ) );
             }
             
-            List<BlogPublication> listPublications = doc.getBlogPubilcation();
+            List<BlogPublication> listPublications = doc.getBlogPublication();
             BlogPublication publication = getPublication( listPublications );
             
             if( publication != null )
